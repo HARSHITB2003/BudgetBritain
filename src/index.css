@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@theme {
+  --font-newsreader: "Newsreader", serif;
+  --font-be-vietnam: "Be Vietnam Pro", sans-serif;
+  --font-ibm-plex: "IBM Plex Mono", monospace;
+
+  --color-ivory: #FAFAF7;
+  --color-chalk: #FFFFFF;
+  --color-linen: #F2F0EB;
+  --color-stone: #E8E5DE;
+  
+  --color-westminster-green: #1B6B4A;
+  --color-treasury-gold: #C5973E;
+  --color-deficit-red: #C0392B;
+  --color-surplus-blue: #2E86C1;
+  
+  --color-ink: #1A1A1A;
+  --color-charcoal: #3D3D3D;
+  --color-graphite: #6B6B6B;
+  --color-silver: #9B9B9B;
+}
+
+:root {
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+  font-family: var(--font-be-vietnam);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .serif {
+  font-family: var(--font-newsreader);
+}
+
+.mono {
+  font-family: var(--font-ibm-plex);
+  font-variant-numeric: tabular-nums;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Card base */
+.card {
+  background: var(--color-chalk);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 32px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05), inset 0 2px 4px 0 rgb(255 255 255 / 0.05);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+  transform: translateY(-8px);
+}
+
+/* Premium Slider */
+input[type=range] {
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+/* Grid background */
+.grid-bg {
+  background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+  background-size: 32px 32px;
+}
+
+/* Animated Mesh Gradient */
+.mesh-gradient {
+  background-color: #FAFAF7;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(158,45%,45%,0.08) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(43,55%,55%,0.08) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(158,45%,45%,0.08) 0, transparent 50%);
+}
+
+@layer base {
+  * {
+    @apply border-stone/30;
+  }
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
