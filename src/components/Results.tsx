@@ -27,6 +27,7 @@ const TiltCard: React.FC<{ children: React.ReactNode; className?: string }> = ({
 const Results: React.FC<ResultsProps> = ({ allocations, communityData }) => {
   const comparisonData = useMemo(() => {
     return BUDGET_CATEGORIES.map(cat => ({
+      id: cat.id,
       name: cat.name,
       actual: cat.actual,
       user: allocations[cat.id],
