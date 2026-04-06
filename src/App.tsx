@@ -31,18 +31,22 @@ const App: React.FC = () => {
   , [allocations]);
 
   const difference = currentTotal - TOTAL_BUDGET;
-  const isBalanced = Math.abs(difference) < 0.1;
+  const isBalanced = Math.abs(difference) < 0.5;
 
   const handleAllocationChange = (id: string, value: number) => {
     setAllocations(prev => ({ ...prev, [id]: value }));
   };
 
+  const autoBalance = () => {
+    const diff = TOTAL_BUDGET - currentTotal;
+    const currentOther = allocations.other;
+    setAllocations(prev => ({ ...prev, other: Math.max(0, currentOther + diff) }));
+  };
+
   const handleSubmit = () => {
     if (isBalanced) {
       setIsSubmitted(true);
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
   };
 
@@ -58,28 +62,27 @@ const App: React.FC = () => {
             <div className="w-10 h-10 bg-ink rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg">B</div>
             <div>
               <h1 className="text-xl font-bold text-ink leading-none">BudgetBritain</h1>
-              <span className="text-[10px] mono text-silver uppercase tracking-widest">Interactive Fiscal Simulator</span>
+              <span className="text-[10px] mono text-silver uppercase tracking-widest tracking-tighter">Chancellor Protocol</span>
             </div>
           </div>
           
           <div className="hidden lg:flex items-center gap-12 text-[11px] font-bold text-graphite uppercase tracking-widest">
-            <a href="#" className="hover:text-westminster-green transition-all">Simulator</a>
-            <a href="#" className="hover:text-westminster-green transition-all">Community</a>
-            <a href="#" className="hover:text-westminster-green transition-all">Methodology</a>
+            <a href="#simulator" className="hover:text-westminster-green transition-all">Simulator</a>
+            <a href="#community" className="hover:text-westminster-green transition-all">Consensus</a>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="h-8 w-px bg-stone" />
             <div className="text-right hidden sm:block">
               <div className="text-xs font-bold text-ink mono leading-none">14,204</div>
-              <div className="text-[9px] text-silver uppercase tracking-tighter">Budgets Submitted</div>
+              <div className="text-[9px] text-silver uppercase tracking-tighter">Protocols Submitted</div>
             </div>
           </div>
         </div>
       </nav>
 
       <main className="pt-40 pb-20">
-        <div className="max-w-7xl mx-auto px-6">
+        <div id="simulator" className="max-w-7xl mx-auto px-6">
           
           {/* Hero Content */}
           <section className="text-center mb-32 relative">
@@ -89,7 +92,7 @@ const App: React.FC = () => {
                className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/40 mb-8"
              >
                <span className="w-2 h-2 rounded-full bg-westminster-green animate-pulse" />
-               <span className="text-[10px] font-bold text-ink uppercase tracking-widest">Live 2025/26 Treasury Data</span>
+               <span className="text-[10px] font-bold text-ink uppercase tracking-widest">Live 2025/26 Treasury Dataset</span>
              </motion.div>
 
              <motion.h2 
@@ -97,7 +100,7 @@ const App: React.FC = () => {
                animate={{ opacity: 1, y: 0 }}
                className="text-6xl md:text-8xl font-bold text-ink mb-8 leading-[0.9] tracking-tight"
              >
-               You Are The <span className="text-westminster-green">Chancellor.</span>
+               The UK Budget <span className="text-westminster-green">In Your Hands.</span>
              </motion.h2>
 
              <motion.p 
@@ -106,8 +109,8 @@ const App: React.FC = () => {
                transition={{ delay: 0.1 }}
                className="text-xl text-charcoal max-w-2xl mx-auto mb-16 font-light leading-relaxed"
              >
-               The UK government spends £1,335B annually. 
-               The choice is yours. But remember: governance is the art of tradeoffs.
+               Governance is the art of the tradeoff. To fund your vision, 
+               you must decide what to sacrifice. Every pound is accounted for.
              </motion.p>
 
              {/* Real 3D interactive Sphere */}
@@ -121,8 +124,8 @@ const App: React.FC = () => {
              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                {[
                  { label: 'Total Budget', value: '£1,335B', icon: LucideIcons.Zap, color: 'text-westminster-green' },
-                 { label: 'Citizens Reaching', value: '67.3M', icon: LucideIcons.Users, color: 'text-treasury-gold' },
-                 { label: 'Fixed Obligations', value: '£114B', icon: LucideIcons.Lock, color: 'text-deficit-red' }
+                 { label: 'Citizens Affected', value: '67.3M', icon: LucideIcons.Users, color: 'text-treasury-gold' },
+                 { label: 'Fixed Debt', value: '£114B', icon: LucideIcons.Lock, color: 'text-deficit-red' }
                ].map((stat, i) => (
                  <motion.div 
                    key={stat.label}
@@ -145,7 +148,7 @@ const App: React.FC = () => {
             <div className="sticky top-32 z-40 mb-12">
               <motion.div 
                 layout
-                className={`glass rounded-[40px] px-10 py-6 flex flex-col lg:flex-row justify-between items-center gap-8 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border-2 transition-colors duration-500 ${isBalanced ? 'border-westminster-green/40' : 'border-deficit-red/40'}`}
+                className={`glass rounded-[40px] px-10 py-6 flex flex-col lg:flex-row justify-between items-center gap-8 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border-2 transition-all duration-500 ${isBalanced ? 'border-westminster-green bg-westminster-green/5' : 'border-deficit-red bg-deficit-red/5'}`}
               >
                 <div className="flex items-center gap-8">
                   <div className="text-left">
@@ -163,17 +166,34 @@ const App: React.FC = () => {
 
                 <div className="flex items-center gap-8">
                   <AnimatePresence mode="wait">
-                    {!isBalanced && (
+                    {!isBalanced ? (
                       <motion.div 
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -20 }}
-                        className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-deficit-red/10 text-deficit-red border border-deficit-red/20"
+                        className="flex items-center gap-4"
                       >
-                        <LucideIcons.AlertTriangle size={20} className="animate-bounce" />
-                        <span className="mono text-sm font-bold uppercase tracking-tight">
-                          {difference > 0 ? `Reduce by £${difference.toFixed(1)}B` : `Increase by £${Math.abs(difference).toFixed(1)}B`}
-                        </span>
+                        <div className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-deficit-red/10 text-deficit-red border border-deficit-red/20">
+                          <LucideIcons.AlertTriangle size={20} className="animate-bounce" />
+                          <span className="mono text-sm font-bold uppercase tracking-tight">
+                            {difference > 0 ? `Cut £${difference.toFixed(1)}B` : `Add £${Math.abs(difference).toFixed(1)}B`}
+                          </span>
+                        </div>
+                        <button 
+                          onClick={autoBalance}
+                          className="px-6 py-3 rounded-2xl bg-ink text-white text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+                        >
+                          Auto-Fix
+                        </button>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="flex items-center gap-2 text-westminster-green font-bold text-sm uppercase tracking-widest"
+                      >
+                        <LucideIcons.CheckCircle2 size={24} />
+                        Budget Balanced
                       </motion.div>
                     )}
                   </AnimatePresence>
