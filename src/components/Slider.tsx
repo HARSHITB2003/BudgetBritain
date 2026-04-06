@@ -48,20 +48,20 @@ const Slider: React.FC<SliderProps> = ({ category, value, onChange }) => {
 
         {/* The Interactive Controller */}
         <div className="w-full lg:w-[45%] group/slider">
-          <div className="relative h-12 flex items-center">
+          <div className="relative h-20 flex items-center">
             {/* Background Track */}
-            <div className="absolute w-full h-2 bg-stone/40 rounded-full overflow-hidden">
+            <div className="absolute w-full h-2 bg-stone/40 rounded-full overflow-hidden pointer-events-none">
                {/* Pulse effect on hover */}
                <motion.div 
                  animate={{ opacity: isHovered ? 1 : 0 }}
-                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none"
                  transition={{ repeat: Infinity, duration: 1.5 }}
                />
             </div>
 
             {/* Progress Fill */}
             <motion.div 
-              className="absolute h-2 rounded-full z-10"
+              className="absolute h-2 rounded-full z-10 pointer-events-none"
               style={{ width: `${percentage}%`, backgroundColor: category.color }}
               animate={{ 
                 opacity: isHovered ? 0.9 : 0.7,
@@ -73,10 +73,12 @@ const Slider: React.FC<SliderProps> = ({ category, value, onChange }) => {
               type="range"
               min="0"
               max={max}
+              step="1"
               value={value}
               disabled={category.locked}
               onChange={(e) => onChange(Number(e.target.value))}
-              className="absolute w-full h-full opacity-0 cursor-pointer z-30"
+              onInput={(e) => onChange(Number((e.target as HTMLInputElement).value))}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50 appearance-none"
             />
 
             {/* Custom Thumb */}
